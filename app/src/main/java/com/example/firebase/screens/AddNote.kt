@@ -23,6 +23,7 @@ fun AddNoteScreen(
 ) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
+    var message by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
 
     Column(
@@ -40,6 +41,7 @@ fun AddNoteScreen(
                 contentDescription = "Back",
                 modifier = Modifier
                     .size(48.dp)
+                    .padding(top = 8.dp, bottom = 8.dp)
                     .clickable { navController.popBackStack() }
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -80,6 +82,8 @@ fun AddNoteScreen(
                             navController.popBackStack()
                         }
                     }
+                } else {
+                    message = "Fills all fields"
                 }
             },
             modifier = Modifier.fillMaxWidth(),
@@ -87,6 +91,10 @@ fun AddNoteScreen(
         ) {
             Text(if (isLoading) "Saving..." else "Save Note")
         }
+
+        Text(
+            text = message
+        )
     }
 }
 

@@ -1,5 +1,6 @@
 package com.example.firebase.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebase.model.Note
@@ -20,9 +21,16 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
     // 🔹 Get Notes for Current User
     fun fetchNotes() {
         viewModelScope.launch {
-            _notes.value = repository.getNotes()
+            val notesList = repository.getNotes()
+            _notes.value = notesList
         }
     }
+
+    /*fun fetchNotes() {
+        viewModelScope.launch {
+            _notes.value = repository.getNotes()
+        }
+    }*/
 
     // 🔹 Add Note (User-Specific)
     fun addNote(title: String, description: String, onComplete: (Boolean) -> Unit) {

@@ -1,5 +1,6 @@
 package com.example.firebase.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -34,6 +35,7 @@ fun HomeScreen(
 ) {
     val userData by authViewModel.userData.collectAsState()
     val notesList by notesViewModel.notes.collectAsState() // Notes list from ViewModel
+    var expandedNoteId by remember { mutableStateOf<String?>(null) }
 
     val name = userData?.get("name") as? String ?: "..."
     val profilePic = userData?.get("profilePic") as? String
@@ -89,13 +91,18 @@ fun HomeScreen(
 
             // Notes List
             LazyColumn {
-                items(notesList) { note ->  // ✅ Yeh sahi hai, kyunki `notesList` ek List<Note> hai
-                    NoteItem(note)
+                items(notesList) { note ->
+//                    NoteItem(note, onDelete = {notesViewModel.deleteNote(note.id)})
+                    NoteItem(
+                        note = note,
+                        onDelete = { notesViewModel.deleteNote(note.id) },
+                        expandedNoteId = expandedNoteId,
+                        onExpand = { id -> expandedNoteId = id }
+                    )
                 }
             }
 
         }
-
 
         // floating icons
         FloatingActionButton(
@@ -112,22 +119,3 @@ fun HomeScreen(
     }
 }
 
-
-// Note Item Composable
-@Composable
-fun NoteItem(note: Note) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Text(text = note.title ?: "", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(text = note.description ?: "", fontSize = 14.sp)
-        }
-    }
-}

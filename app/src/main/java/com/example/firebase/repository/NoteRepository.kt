@@ -1,5 +1,6 @@
 package com.example.firebase.repository
 
+import android.util.Log
 import com.example.firebase.model.Note
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,11 +37,22 @@ class NotesRepository {
     // ✅ 2. Get Notes (सिर्फ Current User के Notes लाने के लिए)
     suspend fun getNotes(): List<Note> {
         val userId = auth.currentUser?.uid ?: return emptyList()
+        val snapshot = notesCollection.whereEqualTo("userId", userId)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .get().await()
+        return snapshot.documents.mapNotNull { doc ->
+            val note = doc.toObject(Note::class.java)
+            note
+        }
+    }
+
+    /*suspend fun getNotes(): List<Note> {
+        val userId = auth.currentUser?.uid ?: return emptyList()
         return notesCollection.whereEqualTo("userId", userId)
             .orderBy("timestamp", Query.Direction.DESCENDING)
             .get().await()
             .documents.mapNotNull { it.toObject(Note::class.java) }
-    }
+    }*/
 
     // ✅ 3. Update Note
     suspend fun updateNote(note: Note) {
