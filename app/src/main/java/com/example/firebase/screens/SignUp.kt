@@ -1,86 +1,97 @@
 package com.example.firebase.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.firebaseauth.viewmodel.AuthViewModel
 
 @Composable
-fun SignupScreen(authManager: AuthManager, navController: NavController) {
+fun SignupScreen(authViewModel: AuthViewModel, navController: NavController) {
+    var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var message by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
 
-    // ✅ Agar user logged in hai, to Home Screen par redirect
-    /*LaunchedEffect(Unit) {
-        if (authManager.isUserLoggedIn()) {
-            navController.navigate("home") {
-                popUpTo("signup") { inclusive = true } // Back button se wapas na aaye
-            }
-        }
-    }*/
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "SignUp Page",
-            modifier = Modifier.padding(bottom = 16.dp),
-            fontSize = 30.sp
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Create Account", fontSize = 24.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+            Spacer(modifier = Modifier.height(16.dp))
 
-        TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") }
-        )
-        Spacer(Modifier.padding(4.dp))
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation()
-        )
-        Spacer(Modifier.padding(4.dp))
-        Button(
-            onClick = {
-                authManager.signUpUser(email, password) { success, msg ->
-                    message = msg ?: ""
-                    if (success) {
-                        navController.navigate("login") // Navigate to Login Screen
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Full Name") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Password") },
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Button(
+                onClick = {
+                    isLoading = true
+                    authViewModel.signUp(name, email, password) { success, msg ->
+                        isLoading = false
+                        message = msg ?: ""
+                        if (success) navController.navigate("login") {
+                            popUpTo(0)
+                        }
                     }
+                },
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !isLoading
+            ) {
+                if (isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                } else {
+                    Text("Sign Up")
                 }
             }
-        ) {
-            Text("Sign Up")
-        }
-        Text(message, color = Color.Red)
 
-        Spacer(Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(message, color = MaterialTheme.colorScheme.error)
 
-        Button(onClick = { navController.navigate("login") }) {
-            Text("Don't have an account? Login")
+            Spacer(modifier = Modifier.height(20.dp))
+            TextButton(onClick = { navController.navigate("login") }) {
+                Text("Already have an account? Login")
+            }
         }
     }
 }
