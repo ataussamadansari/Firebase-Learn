@@ -39,12 +39,12 @@ fun Navigation(
     NavHost(navController, startDestination = startDestination) {
         composable("signup") { SignupScreen(authViewModel, navController) }
         composable("login") { LoginScreen(authViewModel, navController) }
-        composable("home") { HomeScreen(modifier, authViewModel, noteViewModel, navController) }
-        composable("profile") { ProfileScreen(modifier, authViewModel, navController) }
-        composable("note") { NoteScreen(modifier, "", noteViewModel, navController) }
+        composable("home") { HomeScreen(authViewModel, noteViewModel, navController) }
+        composable("profile") { ProfileScreen(authViewModel, navController) }
+        composable("note") { NoteScreen("", noteViewModel, navController) }
         composable("note/{noteId}") { backStackEntry ->
             val noteId = backStackEntry.arguments?.getString("noteId")
-            NoteScreen(modifier, noteId, noteViewModel, navController)
+            NoteScreen(noteId, noteViewModel, navController)
         }
         composable("noteShow/{noteId}") { backStackEntry ->
             val noteId = backStackEntry.arguments?.getString("noteId")

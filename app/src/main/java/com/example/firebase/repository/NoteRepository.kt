@@ -47,16 +47,8 @@ class NotesRepository {
         }
     }
 
-    /*suspend fun getNotes(): List<Note> {
-        val userId = auth.currentUser?.uid ?: return emptyList()
-        return notesCollection.whereEqualTo("userId", userId)
-            .orderBy("timestamp", Query.Direction.DESCENDING)
-            .get().await()
-            .documents.mapNotNull { it.toObject(Note::class.java) }
-    }*/
 
     // ✅ 3. Update Note
-
     // 🔹 Note ko Firestore se laane ka function
     suspend fun getNoteById(noteId: String): Note? {
         return try {
@@ -75,11 +67,6 @@ class NotesRepository {
                 .await()
         }
     }
-    /*suspend fun updateNote(note: Note) {
-        if (note.id.isNotEmpty()) {
-            notesCollection.document(note.id).set(note).await()
-        }
-    }*/
 
     // ✅ 4. Delete Note
     suspend fun deleteNote(noteId: String) {

@@ -36,12 +36,10 @@ import com.example.firebaseauth.viewmodel.AuthViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    modifier: Modifier = Modifier,
     authViewModel: AuthViewModel,
     navController: NavController
 ) {
     val userData by authViewModel.userData.collectAsState()
-    var showDialog by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
         authViewModel.getUserData()
     }
@@ -56,9 +54,6 @@ fun ProfileScreen(
                     }
                 },
                 actions = {
-                    /*IconButton(onClick = { showDialog = true }) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = "Logout")
-                    }*/
                     LogoutButton(navController, authViewModel) // ✅ Use LogoutButton here
                 }
             )

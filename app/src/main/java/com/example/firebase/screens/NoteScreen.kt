@@ -27,7 +27,6 @@ import com.example.firebase.viewmodel.NotesViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreen(
-    modifier: Modifier = Modifier,
     noteId: String? = null,
     notesViewModel: NotesViewModel,
     navController: NavController
@@ -141,118 +140,5 @@ fun NoteScreen(
             )
         }
     }
-
-    /*Column(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        // 🔙 Back Button & Title
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                Icons.Default.ArrowBack,
-                contentDescription = "Back",
-                modifier = Modifier
-                    .size(48.dp)
-                    .padding(8.dp)
-                    .clickable { navController.popBackStack() }
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = screenName, fontSize = 24.sp)
-
-        }
-
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-        ) {
-
-            // 📝 Title Input
-            OutlinedTextField(
-                value = title,
-                onValueChange = { title = it },
-                label = { Text("Title") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(
-                    onNext = { descriptionFocusRequester.requestFocus() } // ✅ Move focus
-                )
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // 📝 Description Input
-            OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
-                label = { Text("Description") },
-                modifier = Modifier.fillMaxWidth()
-                    .height(200.dp)
-                    .focusRequester(descriptionFocusRequester),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                maxLines = 10
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // ✅ Save Button
-            Button(
-                onClick = {
-                    if (title.isNotBlank() && description.isNotBlank()) {
-                        isLoading = true
-                        if (!noteId.isNullOrEmpty()) {
-                            // 🔹 Update existing note
-                            Log.d("HomeScreenTAG", "Update existing note")
-                            notesViewModel.updateNote(noteId, title, description) { success ->
-                                isLoading = false
-                                if (success) navController.popBackStack()
-                            }
-                        } else {
-                            // 🔹 Add new note
-                            Log.d("HomeScreenTAG", "Add new note")
-                            notesViewModel.addNote(title, description) { success ->
-                                isLoading = false
-                                if (success) navController.popBackStack()
-                            }
-                        }
-                    } else {
-                        message = "Please fill all fields"
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !isLoading
-            ) {
-                Text(
-                    if (isLoading) "Saving..." else if (noteId.isNullOrEmpty()) "Save Note" else "Update Note"
-                )
-            }
-            *//*Button(
-            onClick = {
-                if (title.isNotBlank() && description.isNotBlank()) {
-                    isLoading = true
-                    notesViewModel.addNote(title, description) { success ->
-                        isLoading = false
-                        if (success) {
-                            navController.popBackStack()
-                        }
-                    }
-                } else {
-                    message = "Fills all fields"
-                }
-            },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = !isLoading
-        ) {
-            Text(if (isLoading) "Saving..." else "Save Note")
-        }
-*//*
-            Text(
-                text = message
-            )
-        }
-    }*/
 }
 

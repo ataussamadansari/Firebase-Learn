@@ -23,9 +23,10 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             FirebaseLearnTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
+                Scaffold {padding->
                     Navigation(
-                        modifier = Modifier.padding(innerPadding),
+                        modifier = Modifier.padding(paddingValues = padding),
                         authManager = authManager,
                         userRepository = userRepository,
                     )
