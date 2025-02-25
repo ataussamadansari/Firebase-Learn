@@ -67,13 +67,13 @@ fun NoteScreen(
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
-                actions = {
+                /*actions = {
                     if (!noteId.isNullOrEmpty()) {
                         IconButton(onClick = { navController.navigate("note/${noteId}") }) {
                             Icon(Icons.Filled.Edit, contentDescription = "Update")
                         }
                     }
-                }
+                }*/
             )
         }
     ) { padding->
