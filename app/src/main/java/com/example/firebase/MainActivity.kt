@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.firebase.navigation.Navigation
-import com.example.firebase.repository.NotesRepository
 import com.example.firebase.ui.theme.FirebaseLearnTheme
-import com.example.firebase.viewmodel.NotesViewModel
 import com.example.firebaseauth.manager.AuthManager
 import com.example.firebaseauth.manager.UserRepository
 
@@ -20,7 +18,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val noteRepository = NotesRepository()
         val userRepository = UserRepository()
         val authManager = AuthManager(this, userRepository)
 
@@ -31,7 +28,6 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding),
                         authManager = authManager,
                         userRepository = userRepository,
-                        notesRepository = noteRepository,
                     )
                 }
             }

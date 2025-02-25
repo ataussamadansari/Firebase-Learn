@@ -5,6 +5,7 @@ import com.example.firebase.model.Note
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 
 
@@ -55,11 +56,30 @@ class NotesRepository {
     }*/
 
     // ✅ 3. Update Note
+
+    // 🔹 Note ko Firestore se laane ka function
+    suspend fun getNoteById(noteId: String): Note? {
+        return try {
+            val snapshot = notesCollection.document(noteId).get().await()
+            snapshot.toObject(Note::class.java)?.copy(id = snapshot.id)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    // 🔹 Update Note with Firestore Merge (so fields don’t get deleted)
     suspend fun updateNote(note: Note) {
+        if (note.id.isNotEmpty()) {
+            notesCollection.document(note.id)
+                .set(note, SetOptions.merge()) // ✅ Merge only updated fields
+                .await()
+        }
+    }
+    /*suspend fun updateNote(note: Note) {
         if (note.id.isNotEmpty()) {
             notesCollection.document(note.id).set(note).await()
         }
-    }
+    }*/
 
     // ✅ 4. Delete Note
     suspend fun deleteNote(noteId: String) {

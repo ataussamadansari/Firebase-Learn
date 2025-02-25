@@ -8,9 +8,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.firebase.factory.NotesViewModelFactory
 import com.example.firebase.repository.NotesRepository
-import com.example.firebase.screens.AddNoteScreen
 import com.example.firebase.screens.HomeScreen
 import com.example.firebase.screens.LoginScreen
+import com.example.firebase.screens.NoteScreen
+import com.example.firebase.screens.NoteShowScreen
 import com.example.firebase.screens.ProfileScreen
 import com.example.firebase.screens.SignupScreen
 import com.example.firebase.viewmodel.NotesViewModel
@@ -23,24 +24,31 @@ import com.example.firebaseauth.viewmodel.AuthViewModelFactory
 fun Navigation(
     modifier: Modifier = Modifier,
     authManager: AuthManager,
-    userRepository: UserRepository,
-    notesRepository: NotesRepository
+    userRepository: UserRepository
 ) {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = viewModel(
         factory = AuthViewModelFactory(authManager, userRepository)
     )
 
-    val noteViewModel: NotesViewModel = viewModel(factory = NotesViewModelFactory(NotesRepository()))
+    val noteViewModel: NotesViewModel =
+        viewModel(factory = NotesViewModelFactory(NotesRepository()))
 
-
-    val startDestination = if (authViewModel.isUserLoggedIn()) "home" else "signup"
+    val startDestination = if (authViewModel.isUserLoggedIn()) "home" else "login"
 
     NavHost(navController, startDestination = startDestination) {
         composable("signup") { SignupScreen(authViewModel, navController) }
         composable("login") { LoginScreen(authViewModel, navController) }
         composable("home") { HomeScreen(modifier, authViewModel, noteViewModel, navController) }
         composable("profile") { ProfileScreen(modifier, authViewModel, navController) }
-        composable("note") { AddNoteScreen(modifier, noteViewModel, navController) }
+        composable("note") { NoteScreen(modifier, "", noteViewModel, navController) }
+        composable("note/{noteId}") { backStackEntry ->
+            val noteId = backStackEntry.arguments?.getString("noteId")
+            NoteScreen(modifier, noteId, noteViewModel, navController)
+        }
+        composable("noteShow/{noteId}") { backStackEntry ->
+            val noteId = backStackEntry.arguments?.getString("noteId")
+            NoteShowScreen(noteId, noteViewModel, navController)
+        }
     }
 }

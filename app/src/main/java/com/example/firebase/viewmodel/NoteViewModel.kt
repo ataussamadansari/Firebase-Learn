@@ -45,13 +45,34 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
         }
     }
 
+    // 🔹 Get Note by Id
+    suspend fun getNoteById(noteId: String): Note? {
+        return repository.getNoteById(noteId)
+    }
+
     // 🔹 Update Note
-    fun updateNote(note: Note) {
+    fun updateNote(noteId: String, title: String, description: String, onComplete: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val document = repository.getNoteById(noteId) // 🔹 Note fetch karein
+                document?.let { note ->
+                    val updatedNote = note.copy(title = title, description = description)
+                    repository.updateNote(updatedNote)
+                    fetchNotes()
+                    onComplete(true)
+                } ?: onComplete(false)
+            } catch (e: Exception) {
+                onComplete(false)
+            }
+        }
+    }
+
+    /*fun updateNote(note: Note) {
         viewModelScope.launch {
             repository.updateNote(note)
             fetchNotes()
         }
-    }
+    }*/
 
     // 🔹 Delete Note
     fun deleteNote(noteId: String) {
