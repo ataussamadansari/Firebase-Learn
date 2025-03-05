@@ -27,7 +27,6 @@ import com.example.firebaseauth.viewmodel.AuthViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
     authViewModel: AuthViewModel,
     notesViewModel: NotesViewModel,
     navController: NavController,

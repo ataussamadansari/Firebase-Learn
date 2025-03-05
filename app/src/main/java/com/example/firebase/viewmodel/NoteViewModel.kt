@@ -26,12 +26,6 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
         }
     }
 
-    /*fun fetchNotes() {
-        viewModelScope.launch {
-            _notes.value = repository.getNotes()
-        }
-    }*/
-
     // 🔹 Add Note (User-Specific)
     fun addNote(title: String, description: String, onComplete: (Boolean) -> Unit) {
         if (title.isNotBlank() && description.isNotBlank()) {
@@ -66,13 +60,6 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
             }
         }
     }
-
-    /*fun updateNote(note: Note) {
-        viewModelScope.launch {
-            repository.updateNote(note)
-            fetchNotes()
-        }
-    }*/
 
     // 🔹 Delete Note
     fun deleteNote(noteId: String) {
