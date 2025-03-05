@@ -31,7 +31,11 @@ fun SignupScreen(authViewModel: AuthViewModel, navController: NavController) {
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Create Account", fontSize = 24.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+            Text(
+                "Create Account",
+                fontSize = 24.sp,
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+            )
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
@@ -89,7 +93,12 @@ fun SignupScreen(authViewModel: AuthViewModel, navController: NavController) {
             Text(message, color = MaterialTheme.colorScheme.error)
 
             Spacer(modifier = Modifier.height(20.dp))
-            TextButton(onClick = { navController.navigate("login") }) {
+            TextButton(onClick = {
+                /*navController.navigate("login") {
+                    popUpTo(0)
+                }*/
+                navController.navigateUp()
+            }) {
                 Text("Already have an account? Login")
             }
         }

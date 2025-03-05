@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
+    id("kotlin-kapt") // ✅ Add this for KAPT support
 }
 
 android {
@@ -65,4 +66,20 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.play.services.auth)
     implementation(libs.coil.compose)
+
+    implementation("androidx.paging:paging-runtime:3.3.6")
+    implementation("androidx.paging:paging-compose:3.3.6")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1") // ✅ KAPT for Room
+
+
+    // Room Paging dependency
+    implementation ("androidx.room:room-paging:2.6.1")
+
+    // Room Kotlin Extensions (KTX) for Coroutines
+    implementation ("androidx.room:room-ktx:2.6.1")
 }

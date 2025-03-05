@@ -14,6 +14,8 @@ import com.example.firebase.screens.NoteScreen
 import com.example.firebase.screens.NoteShowScreen
 import com.example.firebase.screens.ProfileScreen
 import com.example.firebase.screens.SignupScreen
+import com.example.firebase.screens.SplashScreen
+import com.example.firebase.screens.WallpaperScreen
 import com.example.firebase.viewmodel.NotesViewModel
 import com.example.firebaseauth.manager.AuthManager
 import com.example.firebaseauth.manager.UserRepository
@@ -34,9 +36,11 @@ fun Navigation(
     val noteViewModel: NotesViewModel =
         viewModel(factory = NotesViewModelFactory(NotesRepository()))
 
-    val startDestination = if (authViewModel.isUserLoggedIn()) "home" else "login"
+    val startDestination = "splash"
+//    val startDestination = if (authViewModel.isUserLoggedIn()) "home" else "login"
 
     NavHost(navController, startDestination = startDestination) {
+        composable("splash") { SplashScreen(authViewModel, navController) }
         composable("signup") { SignupScreen(authViewModel, navController) }
         composable("login") { LoginScreen(authViewModel, navController) }
         composable("home") { HomeScreen(modifier, authViewModel, noteViewModel, navController) }
@@ -50,5 +54,6 @@ fun Navigation(
             val noteId = backStackEntry.arguments?.getString("noteId")
             NoteShowScreen(noteId, noteViewModel, navController)
         }
+        composable("wallpaper") { WallpaperScreen(navController) }
     }
 }

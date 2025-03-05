@@ -9,12 +9,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,12 +49,19 @@ fun HomeScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text("Welcome,",
-                            fontSize = 16.sp)
+                        Text(
+                            "Welcome,",
+                            fontSize = 16.sp
+                        )
                         Text(name)
                     }
                 },
                 actions = {
+
+                    IconButton(onClick = { navController.navigate("wallpaper") }) {
+                        Icon(Icons.Default.FavoriteBorder, contentDescription = "Add Note")
+                    }
+
                     profilePic?.let {
                         AsyncImage(
                             model = it,
@@ -113,7 +120,6 @@ fun HomeScreen(
 
         }
     }
-
     /*Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -190,6 +196,7 @@ fun HomeScreen(
             Icon(Icons.Default.Add, contentDescription = "Add")
         }
     }*/
+
 }
 
 

@@ -127,9 +127,7 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController) {
 
             Spacer(modifier = Modifier.height(20.dp))
             TextButton(onClick = {
-                navController.navigate("signup") {
-                    popUpTo(0)
-                }
+                navController.navigate("signup")
             }) {
                 Text("Don't have an account? Sign up")
             }
